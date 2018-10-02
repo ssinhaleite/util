@@ -70,7 +70,7 @@ if __name__ == "__main__":
                     min_x, downsampling_values
                 ),
                 end="",
-                flush=True,
+                flush=True
             )
             print(valid_values, end="", flush=True)
             print(", context {}".format(valid_values[0] - valid_values[-1]))
