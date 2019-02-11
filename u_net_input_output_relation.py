@@ -3,6 +3,7 @@
 # each convolution pass decrease the network size by 2 voxels (but it is applied twice, reducing in fact by 4 voxels)
 CONV_PASS_DECREASE_SIZE = 4
 
+
 def apply_convolution(valid_values):
     if valid_values[-1] - CONV_PASS_DECREASE_SIZE < 0:
         return False
@@ -70,7 +71,7 @@ if __name__ == "__main__":
                     min_x, downsampling_values
                 ),
                 end="",
-                flush=True
+                flush=True,
             )
             print(valid_values, end="", flush=True)
             print(", context {}".format(valid_values[0] - valid_values[-1]))

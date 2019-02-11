@@ -1,10 +1,3 @@
-import json
-import glob
-import re
-import h5py
-import os
-import numpy as np
-
 
 f = open("/home/vleite/Desktop/range.txt", "w")
 

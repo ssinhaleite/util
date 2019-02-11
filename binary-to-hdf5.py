@@ -4,6 +4,7 @@ import re
 import h5py
 import os
 import numpy as np
+from scipy.ndimage import interpolation
 
 data_path = "/media/vleite/a5c2cdb0-d068-41ea-a7a1-b28a29d082f3/ThomasDataset/Wafer1/precomputed"
 data_name = "C1_EM"
@@ -19,7 +20,7 @@ data_size = data["scales"][i]["size"]
 chunk_size = data["scales"][i]["chunk_sizes"][0]
 key_blocks = data["scales"][i]["key"]
 
-limitDataset = True
+limitDataset = False
 """
 In case limitDataset is true, the values of minX, maxX, minY, maxY, minZ and maxZ will be used.
 """
@@ -194,5 +195,26 @@ for infile in sorted(blockFiles):
         dset[z_begin:z_end, y_begin:y_end, x_begin:x_end] = block3d
 
 print(str(skipped_blocks) + " were skipped")
+
+# downscale the EM raw to the LM size
+print("Downscaling EM dataset...")
+downscaling_factor = [1, 0.0769, 0.0769]
+data_downscaled = interpolation.zoom(block3d, downscaling_factor, order=0)
+print("raw downscaled shape: {}".format(data_downscaled.shape))
+
+dset = hdf_group.create_dataset(
+    key_blocks + "downscaled",
+    (data_size[2] / 13, data_size[1] / 13, data_size[0] / 13),
+    chunks=(chunk_size[2], chunk_size[1], chunk_size[0]),
+    dtype=data_type,
+    compression="gzip",
+)
+resolution = [50, 8, 8]
+dset.attrs["resolution"] = resolution
+
+dset[
+    0 : data_size[2] / 13, 0 : data_size[1] / 13, 0 : data_size[0] / 13
+] = data_downscaled
+
 
 print("done!")
