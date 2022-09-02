@@ -26,3 +26,4 @@ Source code from https://github.com/davidfoerster/apt-remove-duplicate-source-en
 
 - u_net_input_output_relation.py: generates valid values for input and output in the u-net architecture.
 
+- Apero Preparation - schedule.ipynb: python notebook to create teams of 3 people to prepare the apero after colloquium
